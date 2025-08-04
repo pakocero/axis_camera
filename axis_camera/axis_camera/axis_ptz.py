@@ -85,7 +85,7 @@ def rescale(x, old_min, old_max, new_min, new_max, clamp=True):
 class AxisPtz:
     """Provides action server interfaces for controlling PTZ of supported devices."""
 
-    def __init__(self, camera, teleop=False):
+    def __init__(self, camera, teleop=False, ptz_state_rate = 1):
         """
         Create a PTZ action server node to control the given camera.
 
@@ -93,6 +93,7 @@ class AxisPtz:
         @param teleop  If True, subscribe to /joy_teleop/joy
         """
         self.axis = camera
+        self.ptz_state_rate = ptz_state_rate
 
         # PTZ parameters
         self.min_pan = self.axis.get_parameter('min_pan').value
@@ -170,7 +171,7 @@ class AxisPtz:
         self.send_position(0, 0, 1)
 
     def publish_joint_states(self):
-        rate = self.axis.create_rate(1)
+        rate = self.axis.create_rate(self.ptz_state_rate)
 
         joints = JointState()
         joints.name = [
@@ -226,6 +227,7 @@ class AxisPtz:
             f'&zoom={int(cmd_zoom)}'
         )
         url = f'http://{self.axis.hostname}:{self.axis.http_port}/{cmd_string}'
+        #self.axis.get_logger().info("SEND POSITION URL " + url)
         resp = requests.get(
             url,
             auth=self.axis.http_auth,
@@ -267,7 +269,7 @@ class AxisPtz:
 
         while goal_handle and not reached_goal and not goal_handle.is_cancel_requested \
                 and goal_handle.is_active:
-            time.sleep(1)
+            time.sleep(0.010)
 
             (pan, tilt, zoom) = self.current_ptz()
 
@@ -292,7 +294,7 @@ class AxisPtz:
         if not goal_handle.is_active:
             return False
         if goal_handle.is_cancel_requested:
-            goal_handle.cancel()
+            goal_handle.canceled()
             return False
         return True
 

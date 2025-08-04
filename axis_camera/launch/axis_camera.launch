@@ -3,39 +3,40 @@
   <!--
     ROS frames & joints
   -->
-  <arg name="camera_name" default="axis" />
+  <arg name="camera_name" default="axis_camera" />
 
   <!--
     Network address & authentication
   -->
-  <arg name="hostname" default="192.168.10.0" />
+  <arg name="hostname" default="192.168.3.71" />
   <arg name="http_port" default="80" />
   <arg name="username" default="root" />
-  <arg name="password" default="" />
+  <arg name="password" default="root" />
   <arg name="use_encrypted_password" default="true" />
 
   <!--
     Stream properties
   -->
   <arg name="camera_num"   default="1" />
-  <arg name="frame_width"  default="640" />
-  <arg name="frame_height" default="480" />
-  <arg name="fps"          default="20" />
+  <arg name="frame_width"  default="1920" />
+  <arg name="frame_height" default="1080" />
+  <arg name="fps"          default="0" />
 
   <!--
     PTZ config
   -->
-  <arg name="ptz_config"  default="$(find-pkg-share axis_camera)/config/axis_dome_ptz.yaml" />
+  <arg name="ptz_config"  default="$(find-pkg-share axis_camera)/config/axis_dome_ptz_inverted.yaml" />
 
   <!--
     Camera peripherals & teleop
   -->
-  <arg name="enable_ptz" default="false" />
-  <arg name="enable_ptz_teleop" default="false" />
+  <arg name="enable_ptz" default="true" />
+  <arg name="enable_ptz_teleop" default="true" />
   <arg name="enable_ir" default="false" />
   <arg name="enable_wiper" default="false" />
   <arg name="enable_defog" default="false" />
   <arg name="teleop_config" default="$(find-pkg-share axis_camera)/config/teleop_ps4.yaml" />
+  <arg name="ptz_state_rate" default="30" /> <!-- MAX 35 because it is a shitty driver -->
   
   <node name="$(var camera_name)_node" pkg="axis_camera" exec="axis_camera_node">
     <param name="hostname" value="$(var hostname)" />
@@ -60,5 +61,6 @@
 
     <param from="$(var ptz_config)" />
     <param from="$(var teleop_config)" />
+    <param name="ptz_state_rate" value="$(var ptz_state_rate)" />
   </node>
 </launch>

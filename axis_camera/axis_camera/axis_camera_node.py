@@ -37,6 +37,7 @@ import rclpy
 from rclpy.executors import MultiThreadedExecutor
 
 from axis_camera.axis_camera import Axis
+import rclpy.parameter
 
 
 def updateArgs(arg_defaults):

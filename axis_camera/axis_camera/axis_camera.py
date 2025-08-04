@@ -301,6 +301,7 @@ class Axis(Node):
                 ('wiper', rclpy.Parameter.Type.BOOL),
                 ('ptz', rclpy.Parameter.Type.BOOL),
                 ('ptz_teleop', rclpy.Parameter.Type.BOOL),
+                ('ptz_state_rate', rclpy.Parameter.Type.INTEGER),
 
                 # PTZ parameters
                 ('min_pan', rclpy.Parameter.Type.DOUBLE),
@@ -346,6 +347,7 @@ class Axis(Node):
         self.wiper = self.get_parameter('wiper').value
         self.use_ptz = self.get_parameter('ptz').value
         self.ptz_teleop = self.get_parameter('ptz_teleop').value
+        self.ptz_state_rate = self.get_parameter('ptz_state_rate').value
 
         self.frame_id = f"{self.tf_prefix}_camera_frame"
 
@@ -452,7 +454,7 @@ class Axis(Node):
         self.msg_thread.start()
 
         if self.use_ptz:
-            self.ptz = AxisPtz(self, self.ptz_teleop)
+            self.ptz = AxisPtz(self, self.ptz_teleop, self.ptz_state_rate)
         else:
             self.ptz = None
 
@@ -472,7 +474,7 @@ class Axis(Node):
         """
         i = Int32()
         b = Bool()
-        rate = self.create_rate(1)
+        rate = self.create_rate(self.ptz_state_rate)
         while rclpy.ok():
             rate.sleep()
             self.last_camera_position = self.queryCameraPosition()
