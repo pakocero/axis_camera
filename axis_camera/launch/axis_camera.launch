@@ -3,7 +3,7 @@
   <!--
     ROS frames & joints
   -->
-  <arg name="camera_name" default="axis_camera" />
+  <arg name="camera_name" default="axis" />
 
   <!--
     Network address & authentication
