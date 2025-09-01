@@ -175,8 +175,8 @@ class AxisPtz:
 
         joints = JointState()
         joints.name = [
-            f"{self.axis.tf_prefix}_pan_joint",
-            f"{self.axis.tf_prefix}_tilt_joint"
+            f"{self.axis.tf_name}_pan_joint",
+            f"{self.axis.tf_name}_tilt_joint"
         ]
         joints.velocity = [0.0, 0.0]
         joints.effort = [0.0, 0.0]

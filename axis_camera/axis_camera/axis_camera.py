@@ -292,7 +292,7 @@ class Axis(Node):
                 ('width', rclpy.Parameter.Type.INTEGER),
                 ('height', rclpy.Parameter.Type.INTEGER),
                 ('fps', rclpy.Parameter.Type.INTEGER),
-                ('tf_prefix', rclpy.Parameter.Type.STRING),
+                ('tf_name', rclpy.Parameter.Type.STRING),
                 ('camera_info_url', rclpy.Parameter.Type.STRING),
                 ('use_encrypted_password', rclpy.Parameter.Type.BOOL),
                 ('camera', rclpy.Parameter.Type.INTEGER),
@@ -338,7 +338,7 @@ class Axis(Node):
         self.width = self.get_parameter('width').value
         self.height = self.get_parameter('height').value
         self.fps = self.get_parameter('fps').value
-        self.tf_prefix = self.get_parameter('tf_prefix').value
+        self.tf_name = self.get_parameter('tf_name').value
         self.camera_info_url = self.get_parameter('camera_info_url').value
         self.use_encrypted_password = self.get_parameter('use_encrypted_password').value
         self.camera = self.get_parameter('camera').value
@@ -349,7 +349,7 @@ class Axis(Node):
         self.ptz_teleop = self.get_parameter('ptz_teleop').value
         self.ptz_state_rate = self.get_parameter('ptz_state_rate').value
 
-        self.frame_id = f"{self.tf_prefix}_camera_frame"
+        self.frame_id = self.tf_name #[f"{self.tf_name}_camera_frame"
 
         self.use_legacy_ir_url = False
 
