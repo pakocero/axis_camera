@@ -9,7 +9,7 @@
   <!--
     Network address & authentication
   -->
-  <arg name="hostname" default="192.168.3.200" />
+  <arg name="hostname" default="192.168.3.71" />
   <arg name="http_port" default="80" />
   <arg name="username" default="root" />
   <arg name="password" default="root" />
